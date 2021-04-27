@@ -26,4 +26,4 @@ stages:
         command: build
         dockerfile: '$(Build.SourcesDirectory)/Dockerfile'
     - bash: |
-        sudo docker run --rm -v changelog.xml:/liquibase/changelog.xml  adityareddy369/adityas  --changeLogFile=/changelog.xml --url="jdbc:sqlserver://$(host);USER=$(USER);PASSWORD=$(PASSWORD);" update
+        sudo docker run --rm -v changelog.xml:/liquibase/changelog.xml  --changeLogFile=/changelog.xml --url="jdbc:sqlserver://$(host);USER=$(USER);PASSWORD=$(PASSWORD);" update
