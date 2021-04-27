@@ -23,7 +23,8 @@ stages:
     - task: Docker@2
       displayName: Build an image
       inputs:
+        repository: adi
         command: build
         dockerfile: '$(Build.SourcesDirectory)/Dockerfile'
     - bash: |
-        sudo docker run --rm -v changelog.xml:/liquibase/changelog.xml  --changeLogFile=/changelog.xml --url="jdbc:sqlserver://$(host);USER=$(USER);PASSWORD=$(PASSWORD);" update
+        sudo docker run --rm -v changelog.xml:/liquibase/changelog.xml adi --changeLogFile=/changelog.xml --url="jdbc:sqlserver://$(host);USER=$(USER);PASSWORD=$(PASSWORD);" update
