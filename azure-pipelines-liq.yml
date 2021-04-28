@@ -44,6 +44,6 @@ jobs:
             buildContext: $(Build.SourcesDirectory)
             repository: 'anveshvemula/liqu'
             command: 'build'
-            dockerfile: $(dockerfilePath)
+            dockerfile: $(Build.SourcesDi/rectory)/liquibase/Dockerfile
         - bash: |
             sudo docker run --rm -v changelog.xml:/liquibase/changelog.xml anveshvemula/liqu:$(Build.BuildId) --changeLogFile=/changelog.xml --url="jdbc:sqlserver://$(host);USER=$(USER);PASSWORD=$(PASSWORD);" update
