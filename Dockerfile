@@ -20,7 +20,7 @@ RUN ln -s /liquibase/docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh \
   && ln -s /liquibase/liquibase /usr/local/bin/liquibase
 
 # Change to the liquibase user
-#USER liquibase
+USER liquibase
 
 # Latest Liquibase Release Version
 ARG LIQUIBASE_VERSION=4.3.3
