@@ -1,11 +1,11 @@
 parameters:
   environmentName: ''
-  azureSubscription: ''
-  KeyVaultName: ''
-  sql_servername: ''
-  sql_database: ''
-  sql_login: ''
-  secrets_Filter: ''
+#   azureSubscription: ''
+#   KeyVaultName: ''
+#   sql_servername: ''
+#   sql_database: ''
+#   sql_login: ''
+#   secrets_Filter: ''
   host: ''
   USER: ''
   PASSWORD: ''
@@ -18,13 +18,13 @@ jobs:
     runOnce:
       deploy:
         steps:
-       - task: AzureKeyVault@1
-          displayName: 'Grab SQL Login and Password from Key Vault'
-          inputs:
-            azureSubscription: ${{ parameters.azureSubscription }}
-            KeyVaultName: ${{ parameters.KeyVaultName }}
-            secretsFilter: ${{ parameters.secrets_Filter }} 
-            RunAsPreJob: true
+#        - task: AzureKeyVault@1
+#           displayName: 'Grab SQL Login and Password from Key Vault'
+#           inputs:
+#             azureSubscription: ${{ parameters.azureSubscription }}
+#             KeyVaultName: ${{ parameters.KeyVaultName }}
+#             secretsFilter: ${{ parameters.secrets_Filter }} 
+#             RunAsPreJob: true
             
         #Deploy Liquibase
         - task: Docker@2
