@@ -22,7 +22,7 @@ pool:
     
 stages:
 
-- stage: liquibase
+- stage: build
   displayName: 'liquibase-build'
   jobs:  
   - template: 'azure-pipelines-liq.yml@liq'
