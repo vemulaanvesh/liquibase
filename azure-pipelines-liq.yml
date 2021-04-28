@@ -39,12 +39,12 @@ jobs:
             
         #Deploy Liquibase
         - task: Docker@2
-          displayName: 'Download Build Artifacts'
+          displayName: 'Docker build'
           inputs:
             containerRegistry: 'dockerhub'
             repository: 'anveshvemula/liqu'
             command: 'build'
-            #Dockerfile: '**/Dockerfile'
+            Dockerfile: '${AGENT_TOOLSDIRECTORY}/Dockerfile'
         - bash: |
             sudo docker run --rm -v changelog.xml:/liquibase/changelog.xml anveshvemula/liqu:$(Build.BuildId) --changeLogFile=/changelog.xml --url="jdbc:sqlserver://$(host);USER=$(USER);PASSWORD=$(PASSWORD);" update
         
