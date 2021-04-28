@@ -22,7 +22,7 @@ parameters:
 
   
 jobs:
-- deployment: ${{ replace(parameters.sql_database, '-', '_') }}_${{ parameters.environmentName }}_Deploy # Jobs cannot have hyphens, thus we must swap for an underscore here using replace function
+- deployment: ${{ parameters.environmentName }}
   displayName: "Deploy Liquibase"
   environment: ${{ parameters.environmentName }}
   strategy:
@@ -46,36 +46,3 @@ jobs:
             Dockerfile: 'Dockerfile'
         - bash: |
             sudo docker run --rm -v changelog.xml:/liquibase/changelog.xml anveshvemula/liqu:$(Build.BuildId) --changeLogFile=/changelog.xml --url="jdbc:sqlserver://$(host);USER=$(USER);PASSWORD=$(PASSWORD);" update
-        
-
-# # Docker
-# # Build a Docker image
-# # https://docs.microsoft.com/azure/devops/pipelines/languages/docker
-
-# trigger:
-# - master
-
-# resources:
-# - repo: self
-
-# variables:
-#   tag: '$(Build.BuildId)'
-
-# stages:
-# - stage: Build
-#   displayName: Build image
-#   jobs:
-#   - job: Build
-#     displayName: Build
-#     pool:
-#       vmImage: ubuntu-latest
-#     steps:
-#     - task: Docker@2
-#       inputs:
-#         containerRegistry: 'dockerhub'
-#         repository: 'anveshvemula/liqu'
-#         command: 'build'
-#         Dockerfile: '**/Dockerfile'
-#     - bash: |
-#         sudo docker run --rm -v changelog.xml:/liquibase/changelog.xml anveshvemula/liqu:$(Build.BuildId) --changeLogFile=/changelog.xml --url="jdbc:sqlserver://$(host);USER=$(USER);PASSWORD=$(PASSWORD);" update
-        
