@@ -105,5 +105,5 @@ COPY --chown=liquibase:liquibase liquibase.docker.properties /liquibase/
 VOLUME /liquibase/classpath
 VOLUME /liquibase/changelog
 
-ENTRYPOINT ["/liquibase/docker-entrypoint.sh"]
+ENTRYPOINT ["bash","/liquibase/docker-entrypoint.sh"]
 CMD ["--help"]
