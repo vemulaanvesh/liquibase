@@ -1,4 +1,5 @@
 #!/bin/bash
+umask 0022
 set -e
 
 if type "$1" > /dev/null 2>&1; then
