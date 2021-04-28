@@ -4,7 +4,7 @@ resources:
   repositories:
     - repository: 'liq' # Friendly name
       type: 'github' # Repo type
-      name: 'https://github.com/vemulaanvesh/liquibase.git' # Repo path
+      name: 'vemulaanvesh/liquibase' # Repo path
       endpoint: 'vemulaanvesh' # Service Connection for GitHub Installation Token
 
 trigger:  
