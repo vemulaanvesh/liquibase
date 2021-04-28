@@ -1,0 +1,96 @@
+name: SQL Config DB DACPAC deployment
+
+resources:
+  repositories:
+    - repository: 'liq' # Friendly name
+      type: 'github' # Repo type
+      name: 'https://github.com/vemulaanvesh/liquibase.git' # Repo path
+      endpoint: 'vemulaanvesh' # Service Connection for GitHub Installation Token
+
+trigger:  
+  branches:
+    include: 
+    - master
+
+variables:
+  databaseName: dmp-sqldb-runway-configuration
+  keyVaultSecret: 'AZURE-SQL-SERVER-PASSWORD'
+  dacpacpath: azure/sql
+
+pool:
+  name: Azure Pipelines
+  vmImage: ubuntu-latest
+    
+stages:
+
+# Pre-Deploy Stages
+- stage: Build
+  displayName: 'DACPAC Build'
+  jobs:
+  - template: 'azure-pipelines.yml@liq'
+    parameters:
+      host: '${{ variables.host }}' # This is a Compile Time Variable, since it is used in the Job name, this variable must be compile time
+      USER: '${{ variables.USER }}'
+      PASSWORD: '${{ variables.PASSWORD }}'
+
+# Script DDL Stage
+# Shows changes that the dacpac will make in each environment
+- stage: DDL_Script
+  displayName: 'Script DACPAC DDL'
+  jobs:  
+  - template: 'azure-pipelines-1.yml@liq'
+    parameters:
+      environmentName: 'build'
+      azureSubscription: 'DataManagementPlatformNonProd'
+      KeyVaultName: 'dmp-kv-runway-build-001'
+      sql_servername: 'dmp-sql-runway-build-001.database.windows.net'
+      sql_database: ${{ variables.databaseName }}
+      sql_login: 'admin-sql-admin-build-001'
+      secrets_Filter: ${{ variables.keyVaultSecret }}
+      sql_dacpac_path: ${{ variables.dacpacpath }}
+      
+  - template: 'azure-pipelines-1.yml@liq'
+    parameters:
+      environmentName: 'dev'
+      azureSubscription: 'DataManagementPlatformNonProd'
+      KeyVaultName: 'dmp-kv-runway-dev-001'
+      sql_servername: 'dmp-sql-runway-dev-001.database.windows.net'
+      sql_database: ${{ variables.databaseName }}
+      sql_login: 'admin-sql-admin-dev-001'
+      secrets_Filter: ${{ variables.keyVaultSecret }}
+      sql_dacpac_path: ${{ variables.dacpacpath }}
+
+
+# Deploy Stages
+- stage: Build_Env
+  displayName: 'DACPAC Deploy Build Env'
+  jobs:
+  - template: 'dacpac-deploy.yaml@template'
+    parameters:
+      environmentName: Build_Env
+      azureSubscription: 'DataManagementPlatformNonProd'
+      KeyVaultName: 'dmp-kv-runway-build-001'
+      sql_servername: 'dmp-sql-runway-build-001.database.windows.net'
+      sql_database: ${{ variables.databaseName }}
+      sql_login: 'admin-sql-admin-build-001'
+      secrets_Filter: ${{ variables.keyVaultSecret }}
+      sql_dacpac_path: ${{ variables.dacpacpath }}
+
+- stage: Dev
+  displayName: 'DACPAC Dev'
+  dependsOn:
+  - DDL_Script
+  jobs:
+  - template: 'dacpac-deploy.yaml@template'
+    parameters:
+      environmentName: Dev
+      azureSubscription: 'DataManagementPlatformNonProd'
+      KeyVaultName: 'dmp-kv-runway-dev-001'
+      sql_servername: 'dmp-sql-runway-dev-001.database.windows.net'
+      sql_database: ${{ variables.databaseName }}
+      sql_login: 'admin-sql-admin-dev-001'
+      secrets_Filter: ${{ variables.keyVaultSecret }}
+      sql_dacpac_path: ${{ variables.dacpacpath }}
+
+dacpac-pipeline.txt
+Displaying dacpac-pipeline.txt.
