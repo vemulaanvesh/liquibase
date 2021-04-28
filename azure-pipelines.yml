@@ -23,7 +23,7 @@ pool:
 stages:
 
 - stage: liquibase
-  displayName: 'liquibase'
+  displayName: 'liquibase-build'
   jobs:  
   - template: 'azure-pipelines-liq.yml@liq'
     parameters:
@@ -31,10 +31,16 @@ stages:
       host: '${{ variables.host }}' 
       USER: '${{ variables.USER }}'
       PASSWORD: '${{ variables.PASSWORD }}'
-      
+
+- stage: Dev
+  displayName: 'liquibase-Dev'
+  dependsOn:
+  - build
+  jobs:
   - template: 'azure-pipelines-liq.yml@liq'
     parameters:
       environmentName: 'dev'
       host: '${{ variables.host }}' 
       USER: '${{ variables.USER }}'
       PASSWORD: '${{ variables.PASSWORD }}'
+  condition: or(and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main')), and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/')))
