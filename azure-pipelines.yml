@@ -22,28 +22,17 @@ pool:
     
 stages:
 
-# Pre-Deploy Stages
-- stage: Build
-  displayName: 'liquibase Build'
-  jobs:
-  - template: 'azure-pipelines-1.yml@liq'
-    parameters:
-      host: '${{ variables.host }}' # This is a Compile Time Variable, since it is used in the Job name, this variable must be compile time
-      USER: '${{ variables.USER }}'
-      PASSWORD: '${{ variables.PASSWORD }}'
-
-
 - stage: liquibase
   displayName: 'liquibase'
   jobs:  
-  - template: 'azure-pipelines.yml@liq'
+  - template: 'azure-pipelines-liq.yml@liq'
     parameters:
       environmentName: 'build'
       host: '${{ variables.host }}' 
       USER: '${{ variables.USER }}'
       PASSWORD: '${{ variables.PASSWORD }}'
       
-  - template: 'azure-pipelines.yml@liq'
+  - template: 'azure-pipelines-liq.yml@liq'
     parameters:
       environmentName: 'dev'
       host: '${{ variables.host }}' 
