@@ -6,6 +6,9 @@ parameters:
   sql_database: ''
   sql_login: ''
   secrets_Filter: ''
+  host: ''
+  USER: ''
+  PASSWORD: ''
   
 jobs:
 - deployment: ${{ replace(parameters.sql_database, '-', '_') }}_${{ parameters.environmentName }}_Deploy # Jobs cannot have hyphens, thus we must swap for an underscore here using replace function
@@ -22,6 +25,7 @@ jobs:
             KeyVaultName: ${{ parameters.KeyVaultName }}
             secretsFilter: ${{ parameters.secrets_Filter }} 
             RunAsPreJob: true
+            
         #Deploy Liquibase
         - task: Docker@2
           displayName: 'Download Build Artifacts'
