@@ -6,19 +6,23 @@ parameters:
   sql_database: ''
   sql_login: ''
   secrets_Filter: ''
-  sql_dacpac_path: ''
   
 jobs:
 - deployment: ${{ replace(parameters.sql_database, '-', '_') }}_${{ parameters.environmentName }}_Deploy # Jobs cannot have hyphens, thus we must swap for an underscore here using replace function
-  displayName: "Deploy DACPAC"
+  displayName: "Deploy Liquibase"
   environment: ${{ parameters.environmentName }}
   strategy:
     runOnce:
       deploy:
         steps:
-        
-        # Download build artifacts
-        # Download files that were saved as artifacts of a completed build
+       - task: AzureKeyVault@1
+          displayName: 'Grab SQL Login and Password from Key Vault'
+          inputs:
+            azureSubscription: ${{ parameters.azureSubscription }}
+            KeyVaultName: ${{ parameters.KeyVaultName }}
+            secretsFilter: ${{ parameters.secrets_Filter }} 
+            RunAsPreJob: true
+        #Deploy Liquibase
         - task: Docker@2
           displayName: 'Download Build Artifacts'
           inputs:
