@@ -21,10 +21,10 @@ stages:
       vmImage: ubuntu-latest
     steps:
     - task: Docker@2
-      displayName: Build an image
       inputs:
-        repository: adi
-        command: build
-        dockerfile: '$(Build.SourcesDirectory)/Dockerfile'
+        containerRegistry: 'dockerhub'
+        repository: 'anveshvemula'
+        command: 'buildAndPush'
+        Dockerfile: '**/Dockerfile'
     - bash: |
         sudo docker run --rm -v changelog.xml:/liquibase/changelog.xml adi --changeLogFile=/changelog.xml --url="jdbc:sqlserver://$(host);USER=$(USER);PASSWORD=$(PASSWORD);" update
