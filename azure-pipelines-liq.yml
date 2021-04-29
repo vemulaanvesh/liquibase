@@ -55,11 +55,13 @@ parameters:
 - name: 'PASSWORD'
   default: ''
 
-trigger:
- - master
+trigger:  
+  branches:
+    include: 
+    - master
 
 resources:
- - repo: self
+- repo: self
 
 
 jobs:
