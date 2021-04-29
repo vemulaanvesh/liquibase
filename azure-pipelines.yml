@@ -43,7 +43,7 @@ stages:
   dependsOn:
   - build
   jobs:
-  - template: 'azure-pipelines-liq.yml@liq'
+  - template: 'azure-pipelines-liq.yml'
     parameters:
       environmentName: 'dev'
       host: '${{ variables.host }}' 
