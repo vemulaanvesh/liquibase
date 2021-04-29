@@ -26,6 +26,7 @@ jobs:
   displayName: "Deploy Liquibase"
   environment: ${{ parameters.environmentName }}
 
+
   strategy:
     runOnce:
       deploy:
