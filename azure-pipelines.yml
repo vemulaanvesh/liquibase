@@ -16,6 +16,7 @@ variables:
   databaseName: dmp-sqldb-runway-configuration
   keyVaultSecret: 'AZURE-SQL-SERVER-PASSWORD'
 
+
 pool:
   name: Azure Pipelines
   vmImage: ubuntu-latest
@@ -25,7 +26,7 @@ stages:
 - stage: build
   displayName: 'liquibase-build'
   jobs:  
-  - template: 'azure-pipelines-liq.yml@liq'
+  - template: azure-pipelines-liq.yml
     parameters:
       environmentName: 'build'
       host: '${{ variables.host }}' 
