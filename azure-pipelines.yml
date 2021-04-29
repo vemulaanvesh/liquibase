@@ -31,7 +31,7 @@ stages:
 - stage: build
   displayName: 'liquibase-build'
   jobs:  
-  - template: azure-pipelines-liq.yml
+  - template: 'azure-pipelines-liq.yml'
     parameters:
       environmentName: 'build'
       host: '${{ variables.host }}' 
