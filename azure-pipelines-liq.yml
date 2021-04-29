@@ -33,6 +33,14 @@
 #         sudo docker run --rm -v changelog.xml:/liquibase/changelog.xml anveshvemula/liqu:$(Build.BuildId) --changeLogFile=/changelog.xml --url="jdbc:sqlserver://$(host);USER=$(USER);PASSWORD=$(PASSWORD);" update
 
 #---------------------------------------------------
+trigger:  
+  branches:
+    include: 
+    - master
+
+resources:
+- repo: self
+
 parameters:
 - name: 'environmentName'
   default: ''
@@ -54,14 +62,6 @@ parameters:
   default: ''
 - name: 'PASSWORD'
   default: ''
-
-trigger:  
-  branches:
-    include: 
-    - master
-
-resources:
-- repo: self
 
 
 jobs:
