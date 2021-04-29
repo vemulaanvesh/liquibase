@@ -1,14 +1,5 @@
 name: SQL Liquibase deployment
 
-
-
-# resources:
-#   repositories:
-#     - repository: 'liq' # Friendly name
-#       type: 'github' # Repo type
-#       name: 'vemulaanvesh/liquibase' # Repo path
-#       endpoint: 'vemulaanvesh' # Service Connection for GitHub Installation Token
-
 trigger:  
   branches:
     include: 
