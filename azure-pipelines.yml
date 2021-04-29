@@ -20,8 +20,7 @@ resources:
 variables:
   databaseName: dmp-sqldb-runway-configuration
   keyVaultSecret: 'AZURE-SQL-SERVER-PASSWORD'
-
-
+  
 pool:
   name: Azure Pipelines
   vmImage: ubuntu-latest
