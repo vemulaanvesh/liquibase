@@ -11,6 +11,7 @@ resources:
 variables:
   databaseName: dmp-sqldb-runway-configuration
   keyVaultSecret: 'AZURE-SQL-SERVER-PASSWORD'
+  host: ''
   
 pool:
   name: Azure Pipelines
@@ -24,7 +25,7 @@ stages:
   - template: 'azure-pipelines-liq.yml'
     parameters:
       environmentName: 'build'
-      host: '${{ variables.host }}' 
+      host: 'liqu.database.windows.net'
       USER: '${{ variables.USER }}'
       PASSWORD: '${{ variables.PASSWORD }}'
 
