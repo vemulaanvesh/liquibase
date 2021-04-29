@@ -1,6 +1,5 @@
-# Docker
-# Build a Docker image
-# https://docs.microsoft.com/azure/devops/pipelines/languages/docker
+
+#---------------------------------------------------
 
 parameters:
 - name: 'environmentName'
@@ -24,82 +23,40 @@ parameters:
 - name: 'PASSWORD'
   default: ''
 
-trigger:
-- master
 
-resources:
-- repo: self
+jobs:
+- deployment: ${{ parameters.environmentName }}
+  displayName: "Deploy Liquibase"
+  environment: ${{ parameters.environmentName }}
 
-variables:
-  tag: '$(Build.BuildId)'
-  USER: '$(USER)'
-  PASSWORD: '$(PASSWORD)'
-  #host: '$(host)'
+  strategy:
+    runOnce:
+      deploy:
+        steps:
+        
 
-stages:
-- stage: Build
-  displayName: Build image
-  jobs:
-  - job: Build
-    displayName: Build
-
-    steps:
-    - task: Docker@2
-      displayName: Build an image
-      inputs:
-        repository: 'anveshvemula/liqu'
-        command: 'build'
-        dockerfile: '**/Dockerfile'
-    - bash: |
-        sudo docker run --rm -v changelog.xml:/liquibase/changelog.xml anveshvemula/liqu:$(Build.BuildId) --changeLogFile=/changelog.xml --url="jdbc:sqlserver://$(host);USER=$(USER);PASSWORD=$(PASSWORD);" update
-
-#---------------------------------------------------
-
-# parameters:
-# - name: 'environmentName'
-#   default: ''
-# - name: 'azureSubscription'
-#   default: ''
-# - name: 'KeyVaultName'
-#   default: ''
-# - name: 'sql_servername'
-#   default: ''
-# - name: 'sql_database'
-#   default: ''
-# - name: 'sql_login'
-#   default: ''
-# - name: 'secrets_Filter'
-#   default: ''
-# - name: 'host'
-#   default: ''
-# - name: 'USER'
-#   default: ''
-# - name: 'PASSWORD'
-#   default: ''
-
-
-# jobs:
-# - deployment: ${{ parameters.environmentName }}
-#   displayName: "Deploy Liquibase"
-#   environment: ${{ parameters.environmentName }}
-
-#   strategy:
-#     runOnce:
-#       deploy:
-#         steps:
-# #        - task: AzureKeyVault@1
-# #           displayName: 'Grab SQL Login and Password from Key Vault'
-# #           inputs:
-# #             azureSubscription: ${{ parameters.azureSubscription }}
-# #             KeyVaultName: ${{ parameters.KeyVaultName }}
-# #             secretsFilter: ${{ parameters.secrets_Filter }} 
-# #             RunAsPreJob: true
-#         #Deploy Liquibase
-#         - task: Docker@2
-#           displayName: 'Docker build'
+#        - task: AzureKeyVault@1
+#           displayName: 'Grab SQL Login and Password from Key Vault'
 #           inputs:
-#             repository: 'anveshvemula/liqu'
-#             command: 'build'
-#             dockerfile: '**/Dockerfile'
-#         - bash: |
-#             sudo docker run --rm -v changelog.xml:/liquibase/changelog.xml anveshvemula/liqu:$(Build.BuildId) --changeLogFile=/changelog.xml --url="jdbc:sqlserver://$(host);USER=$(USER);PASSWORD=$(PASSWORD);" update
+#             azureSubscription: ${{ parameters.azureSubscription }}
+#             KeyVaultName: ${{ parameters.KeyVaultName }}
+#             secretsFilter: ${{ parameters.secrets_Filter }} 
+#             RunAsPreJob: true
+        #Deploy Liquibase
+        - task: Bash@3
+          inputs:
+            targetType: 'inline'
+            script: |
+              # Write your commands here
+      
+              echo 'Hello world' /
+              pwd /
+              ls -la /
+        - task: Docker@2
+          displayName: 'Docker build'
+          inputs:
+            repository: 'anveshvemula/liqu'
+            command: 'build'
+            dockerfile: '**/Dockerfile'
+        - bash: |
+            sudo docker run --rm -v changelog.xml:/liquibase/changelog.xml anveshvemula/liqu:$(Build.BuildId) --changeLogFile=/changelog.xml --url="jdbc:sqlserver://$(host);USER=$(USER);PASSWORD=$(PASSWORD);" update
