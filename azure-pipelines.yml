@@ -11,7 +11,7 @@ resources:
 variables:
   databaseName: dmp-sqldb-runway-configuration
   PASSWORD: 'AZURE-SQL-SERVER-PASSWORD'
-  host: $host
+  host: $(host)
   
 pool:
   name: Azure Pipelines
