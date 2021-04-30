@@ -12,7 +12,8 @@ variables:
   databaseName: dmp-sqldb-runway-configuration
   PASSWORD: 'AZURE-SQL-SERVER-PASSWORD'
   USER: 'ANVESH'
-  host: ${{ parameters.host }}
+  host: ${{ parameters-host }}
+
 pool:
   name: Azure Pipelines
   vmImage: ubuntu-latest
