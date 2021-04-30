@@ -11,13 +11,12 @@ resources:
 variables:
   databaseName: dmp-sqldb-runway-configuration
   PASSWORD: 'AZURE-SQL-SERVER-PASSWORD'
-  host_build: 'liqu.database.windows.net'
-  host_dev: 'liqu.dev.database.windows.net'
-
+  USER: 'ANVESH'
+  host: ${{host}}
 pool:
   name: Azure Pipelines
   vmImage: ubuntu-latest
-  
+    
 stages:
 
 - stage: build
@@ -26,7 +25,7 @@ stages:
   - template: 'azure-pipelines-liq.yml'
     parameters:
       environmentName: 'build'
-      host_build: ${{ variables.host_build }}
+      host: liqu.database.windows.net
       USER: '${{ variables.USER }}'
       PASSWORD: '${{ variables.PASSWORD }}'
 
@@ -38,7 +37,7 @@ stages:
   - template: 'azure-pipelines-liq.yml'
     parameters:
       environmentName: 'dev'
-      host_dev: ${{ variables.host_dev }} 
+      host: liqu.database.windows.net 
       USER: '${{ variables.USER }}'
       PASSWORD: '${{ variables.PASSWORD }}'
   condition: or(and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main')), and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/')))
