@@ -47,4 +47,4 @@ jobs:
             command: 'build'
             dockerfile: '**/Dockerfile'
         - bash: |
-            sudo docker run --rm -v changelog.xml:/liquibase/changelog.xml anveshvemula/liqu:$(Build.BuildId) --changeLogFile=/changelog.xml --url="jdbc:sqlserver://"${{ parameters.host }}";USER=$(USER);PASSWORD=$(PASSWORD);" update
+            sudo docker run --rm -v changelog.xml:/liquibase/changelog/ liquibase/liquibase:$(Build.BuildId) --changeLogFile=/liquibase/changelog/changelog.xml --url="jdbc:sqlserver://"${{ parameters.host }}";USER=$(USER);PASSWORD=$(PASSWORD);"  generateChangeLog
